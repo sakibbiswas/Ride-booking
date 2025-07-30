@@ -15,7 +15,7 @@
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 `src/
 ├── config/
@@ -31,7 +31,7 @@
 
 ---
 
-## 🔐 User Roles & Features
+##  User Roles & Features
 
 ###  Rider
 
@@ -48,7 +48,7 @@
 - `View ride earnings`
 
 
-### 🛡️ Admin
+###  Admin
 
 - `Approve/suspend drivers `
 - `View system analytics`
