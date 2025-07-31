@@ -1,4 +1,3 @@
-
 import { Request, Response } from 'express';
 import * as UserService from './user.service';
 import sendResponse from '../../utils/sendResponse';
