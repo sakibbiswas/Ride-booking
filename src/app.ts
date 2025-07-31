@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-// Test GET route
+
 app.get('/', (req, res) => {
   res.send(' Ride Booking API is running!');
 });
