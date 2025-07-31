@@ -23,24 +23,24 @@ const createDefaultAdmin = async () => {
     });
 
     await adminUser.save();
-    console.log('✅ Default admin user created');
+    console.log(' Default admin user created');
   } else {
-    console.log('ℹ️ Admin already exists');
+    console.log(' Admin already exists');
   }
 };
 
 const main = async () => {
   try {
     await mongoose.connect(config.mongo_uri as string);
-    console.log('✅ Connected to MongoDB');
+    console.log(' Connected to MongoDB');
 
     await createDefaultAdmin(); // Auto-create admin if missing
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server is running on port ${PORT}`);
+      console.log(` Server is running on port ${PORT}`);
     });
   } catch (err) {
-    console.error('❌ Failed to start server:', err);
+    console.error(' Failed to start server:', err);
   }
 };
 
