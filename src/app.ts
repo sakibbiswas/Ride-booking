@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 // Test GET route
 app.get('/', (req, res) => {
-  res.send('🚗 Ride Booking API is running!');
+  res.send(' Ride Booking API is running!');
 });
 
 // Routes
