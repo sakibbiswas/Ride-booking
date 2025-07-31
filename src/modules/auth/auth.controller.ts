@@ -1,4 +1,3 @@
-
 import { Request, Response } from 'express';
 import * as AuthService from './auth.service';
 import sendResponse from '../../utils/sendResponse';
