@@ -16,7 +16,7 @@ const router = express.Router();
 //  Allow all authenticated users to access this
 router.get('/me', authMiddleware(), getMyProfile);
 
-// ✅ Admin-only
+//  Admin-only
 router.get('/', authMiddleware(UserRole.ADMIN), getAllUsers);
 router.patch('/block/:id', authMiddleware(UserRole.ADMIN), blockUser);
 router.patch('/unblock/:id', authMiddleware(UserRole.ADMIN), unblockUser);

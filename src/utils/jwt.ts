@@ -7,7 +7,7 @@ const JWT_SECRET: Secret = config.jwt_secret || 'default_jwt_secret';
 // Generate JWT Token
 export const signToken = (
   payload: string | object | Buffer,
-  expiresIn: SignOptions['expiresIn'] = '7d' //  correct typing for "7d"
+  expiresIn: SignOptions['expiresIn'] = '7d' 
 ): string => {
   const options: SignOptions = { expiresIn };
   return jwt.sign(payload, JWT_SECRET, options);
