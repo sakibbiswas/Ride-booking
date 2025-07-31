@@ -10,7 +10,7 @@ export const registerUser = async (
   password: string,
   role: UserRole
 ) => {
-  const normalizedEmail = email.toLowerCase(); // normalize
+  const normalizedEmail = email.toLowerCase(); 
 
   const existingUser = await User.findOne({ email: normalizedEmail });
   if (existingUser) throw new Error('User already exists');
