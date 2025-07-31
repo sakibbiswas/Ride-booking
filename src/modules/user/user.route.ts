@@ -13,7 +13,7 @@ import { UserRole } from './user.model';
 
 const router = express.Router();
 
-// ✅ Allow all authenticated users to access this
+//  Allow all authenticated users to access this
 router.get('/me', authMiddleware(), getMyProfile);
 
 // ✅ Admin-only
