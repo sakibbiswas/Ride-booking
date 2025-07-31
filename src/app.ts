@@ -8,14 +8,11 @@ import rideRoutes from './modules/ride/ride.route';
 import errorMiddleware from './middlewares/error.middleware';
 import adminRoutes from './modules/user/admin.route';
 
-
-
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-
 
 app.get('/', (req, res) => {
   res.send('Ride Booking API is running!');
