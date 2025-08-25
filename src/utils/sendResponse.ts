@@ -1,18 +1,17 @@
+
+// src/utils/sendResponse.ts
 import { Response } from 'express';
+
+interface IResponse<T> {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data?: T | null; 
+}
 
 const sendResponse = <T>(
   res: Response,
-  {
-    statusCode,
-    success,
-    message,
-    data,
-  }: {
-    statusCode: number;
-    success: boolean;
-    message: string;
-    data: T;
-  }
+  { statusCode, success, message, data = null }: IResponse<T>
 ) => {
   res.status(statusCode).json({
     success,

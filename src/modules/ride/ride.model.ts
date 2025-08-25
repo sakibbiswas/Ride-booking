@@ -68,6 +68,3 @@ export const Ride = mongoose.model<IRide>('Ride', rideSchema);
 
 
 
-
-
-

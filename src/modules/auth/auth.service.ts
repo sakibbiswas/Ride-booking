@@ -10,12 +10,14 @@ export const registerUser = async (
   password: string,
   role: UserRole
 ) => {
-  const normalizedEmail = email.toLowerCase(); 
+  const normalizedEmail = email.toLowerCase();
 
   const existingUser = await User.findOne({ email: normalizedEmail });
   if (existingUser) throw new Error('User already exists');
 
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  //  Rider & Admin auto-approved, Driver needs admin approval
   const isApproved = role === UserRole.DRIVER ? false : true;
 
   const user = new User({
@@ -31,14 +33,14 @@ export const registerUser = async (
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const normalizedEmail = email.toLowerCase(); // normalize
+  const normalizedEmail = email.toLowerCase();
 
   const user = await User.findOne({ email: normalizedEmail });
-
   if (!user) throw new Error('User not found');
+
   if (user.isBlocked) throw new Error('User is blocked');
   if (user.role === UserRole.DRIVER && !user.isApproved) {
-    throw new Error('Driver is not approved yet');
+    throw new Error('Driver is not approved yet by Admin');
   }
 
   const isPasswordMatch = await bcrypt.compare(password, user.password);
@@ -50,6 +52,15 @@ export const loginUser = async (email: string, password: string) => {
     { expiresIn: '7d' }
   );
 
-  return { token, user };
+  return {
+    token,
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isBlocked: user.isBlocked,
+      isApproved: user.isApproved,
+    },
+  };
 };
-

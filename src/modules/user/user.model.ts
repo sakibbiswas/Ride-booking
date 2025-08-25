@@ -1,4 +1,5 @@
 
+
 import { Schema, model } from 'mongoose';
 
 export enum UserRole {
@@ -7,7 +8,7 @@ export enum UserRole {
   DRIVER = 'driver',
 }
 
-interface IUser {
+export interface IUser {
   name: string;
   email: string;
   password: string;
@@ -15,7 +16,16 @@ interface IUser {
   isBlocked?: boolean;
   isApproved?: boolean;
   isOnline?: boolean;
+  emergencyContacts?: { name: string; phone: string }[]; // ✅ array of objects
 }
+
+const emergencyContactSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+  },
+  { _id: false } // prevent generating _id for each contact
+);
 
 const userSchema = new Schema<IUser>(
   {
@@ -24,7 +34,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
       unique: true,
-      lowercase: true, // ✅ this makes sure it's always saved as lowercase
+      lowercase: true,
     },
     password: { type: String, required: true },
     role: {
@@ -35,6 +45,7 @@ const userSchema = new Schema<IUser>(
     isBlocked: { type: Boolean, default: false },
     isApproved: { type: Boolean, default: false },
     isOnline: { type: Boolean, default: false },
+    emergencyContacts: [emergencyContactSchema], // ✅ nested object array
   },
   { timestamps: true }
 );
