@@ -8,13 +8,18 @@ var UserRole;
     UserRole["RIDER"] = "rider";
     UserRole["DRIVER"] = "driver";
 })(UserRole || (exports.UserRole = UserRole = {}));
+const emergencyContactSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+}, { _id: false } // prevent generating _id for each contact
+);
 const userSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: {
         type: String,
         required: true,
         unique: true,
-        lowercase: true, // ✅ this makes sure it's always saved as lowercase
+        lowercase: true,
     },
     password: { type: String, required: true },
     role: {
@@ -25,5 +30,6 @@ const userSchema = new mongoose_1.Schema({
     isBlocked: { type: Boolean, default: false },
     isApproved: { type: Boolean, default: false },
     isOnline: { type: Boolean, default: false },
+    emergencyContacts: [emergencyContactSchema], // ✅ nested object array
 }, { timestamps: true });
 exports.User = (0, mongoose_1.model)('User', userSchema);

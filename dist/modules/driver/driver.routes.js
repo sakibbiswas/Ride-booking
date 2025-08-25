@@ -11,4 +11,8 @@ const router = express_1.default.Router();
 router.post('/accept/:rideId', (0, auth_middleware_1.default)(user_model_1.UserRole.DRIVER), driver_controller_1.acceptRide);
 router.patch('/update-status/:rideId', (0, auth_middleware_1.default)(user_model_1.UserRole.DRIVER), driver_controller_1.updateRideStatus);
 router.get('/earnings', (0, auth_middleware_1.default)(user_model_1.UserRole.DRIVER), driver_controller_1.getDriverEarnings);
+// Toggle online/offline
+router.patch('/toggle-online', (0, auth_middleware_1.default)(user_model_1.UserRole.DRIVER), driver_controller_1.toggleOnline);
+// Active ride
+router.get('/active', (0, auth_middleware_1.default)(user_model_1.UserRole.DRIVER), driver_controller_1.getActiveRide);
 exports.default = router;

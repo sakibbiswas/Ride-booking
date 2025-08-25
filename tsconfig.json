@@ -24,3 +24,24 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   }
 }
+
+
+
+
+
+
+
+
+// {
+  
+//   "compilerOptions": {
+//     "target": "es6",
+//     "module": "commonjs",
+//     "rootDir": "./src",
+//     "outDir": "./dist",
+//     "esModuleInterop": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "strict": true,
+//     "skipLibCheck": true
+//   }
+// }

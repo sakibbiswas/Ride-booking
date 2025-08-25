@@ -18,11 +18,12 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = require("../user/user.model");
 const config_1 = __importDefault(require("../../config"));
 const registerUser = (name, email, password, role) => __awaiter(void 0, void 0, void 0, function* () {
-    const normalizedEmail = email.toLowerCase(); // normalize
+    const normalizedEmail = email.toLowerCase();
     const existingUser = yield user_model_1.User.findOne({ email: normalizedEmail });
     if (existingUser)
         throw new Error('User already exists');
     const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
+    //  Rider & Admin auto-approved, Driver needs admin approval
     const isApproved = role === user_model_1.UserRole.DRIVER ? false : true;
     const user = new user_model_1.User({
         name,
@@ -36,19 +37,29 @@ const registerUser = (name, email, password, role) => __awaiter(void 0, void 0, 
 });
 exports.registerUser = registerUser;
 const loginUser = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const normalizedEmail = email.toLowerCase(); // normalize
+    const normalizedEmail = email.toLowerCase();
     const user = yield user_model_1.User.findOne({ email: normalizedEmail });
     if (!user)
         throw new Error('User not found');
     if (user.isBlocked)
         throw new Error('User is blocked');
     if (user.role === user_model_1.UserRole.DRIVER && !user.isApproved) {
-        throw new Error('Driver is not approved yet');
+        throw new Error('Driver is not approved yet by Admin');
     }
     const isPasswordMatch = yield bcryptjs_1.default.compare(password, user.password);
     if (!isPasswordMatch)
         throw new Error('Invalid credentials');
     const token = jsonwebtoken_1.default.sign({ userId: user._id.toString(), role: user.role }, config_1.default.jwt_secret, { expiresIn: '7d' });
-    return { token, user };
+    return {
+        token,
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            isBlocked: user.isBlocked,
+            isApproved: user.isApproved,
+        },
+    };
 });
 exports.loginUser = loginUser;

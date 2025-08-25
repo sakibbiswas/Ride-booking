@@ -20,7 +20,8 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.1",
     "micro-cors": "^0.1.1",
-    "mongoose": "^7.6.1"
+    "mongoose": "^7.6.1",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

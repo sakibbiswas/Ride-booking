@@ -45,29 +45,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDriverEarnings = exports.updateRideStatus = exports.acceptRide = void 0;
+exports.getActiveRide = exports.toggleOnline = exports.getDriverEarnings = exports.updateRideStatus = exports.acceptRide = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const ride_model_1 = require("../ride/ride.model");
 const rideService = __importStar(require("../ride/ride.service"));
+const user_model_1 = require("../user/user.model");
+// Accept ride
 const acceptRide = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user)
         return res.status(401).json({ message: 'Unauthorized' });
     const { rideId } = req.params;
     const driverId = req.user.userId;
+    if (!mongoose_1.default.Types.ObjectId.isValid(rideId)) {
+        return res.status(400).json({ message: 'Invalid ride ID' });
+    }
     try {
-        const id = rideId.trim();
-        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid ride ID' });
-        }
-        const ride = yield rideService.updateRideStatus(id, driverId, ride_model_1.RideStatus.ACCEPTED);
-        res.status(200).json(ride);
+        const ride = yield rideService.updateRideStatus(rideId, driverId, ride_model_1.RideStatus.ACCEPTED);
+        return res.status(200).json({ success: true, message: 'Ride accepted', data: ride });
     }
     catch (err) {
-        console.error('Accept ride error:', err);
-        res.status(500).json({ message: 'Error accepting ride', error: err });
+        return res.status(500).json({ message: 'Error accepting ride', error: err });
     }
 });
 exports.acceptRide = acceptRide;
+// Update ride status
 const updateRideStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user)
         return res.status(401).json({ message: 'Unauthorized' });
@@ -78,19 +79,15 @@ const updateRideStatus = (req, res) => __awaiter(void 0, void 0, void 0, functio
         return res.status(400).json({ message: 'Invalid status value' });
     }
     try {
-        const id = rideId.trim();
-        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid ride ID' });
-        }
-        const ride = yield rideService.updateRideStatus(id, driverId, status);
-        res.status(200).json(ride);
+        const ride = yield rideService.updateRideStatus(rideId, driverId, status);
+        return res.status(200).json({ success: true, message: 'Ride status updated', data: ride });
     }
     catch (err) {
-        console.error('Update ride status error:', err);
-        res.status(500).json({ message: 'Error updating ride status', error: err });
+        return res.status(500).json({ message: 'Error updating ride status', error: err });
     }
 });
 exports.updateRideStatus = updateRideStatus;
+// Driver earnings
 const getDriverEarnings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user)
         return res.status(401).json({ message: 'Unauthorized' });
@@ -99,11 +96,30 @@ const getDriverEarnings = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const rides = yield rideService.getRideHistory(driverId, 'driver');
         const completedRides = rides.filter(r => r.status === ride_model_1.RideStatus.COMPLETED);
         const totalEarnings = completedRides.reduce((sum, ride) => sum + (ride.fare || 0), 0);
-        res.status(200).json({ totalEarnings, rideCount: completedRides.length });
+        return res.status(200).json({ success: true, totalEarnings, rideCount: completedRides.length });
     }
     catch (err) {
-        console.error('Earnings error:', err);
-        res.status(500).json({ message: 'Error fetching earnings', error: err });
+        return res.status(500).json({ message: 'Error fetching earnings', error: err });
     }
 });
 exports.getDriverEarnings = getDriverEarnings;
+// Toggle online/offline
+const toggleOnline = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.user)
+        return res.status(401).json({ message: 'Unauthorized' });
+    const { isOnline } = req.body;
+    const updated = yield user_model_1.User.findByIdAndUpdate(req.user.userId, { isOnline: !!isOnline }, { new: true }).select('name email role isOnline isApproved isBlocked');
+    return res.status(200).json({ success: true, message: 'Status updated', data: updated });
+});
+exports.toggleOnline = toggleOnline;
+// Active ride
+const getActiveRide = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.user)
+        return res.status(401).json({ message: 'Unauthorized' });
+    const active = yield ride_model_1.Ride.findOne({
+        driverId: req.user.userId,
+        status: { $in: [ride_model_1.RideStatus.ACCEPTED, ride_model_1.RideStatus.PICKED_UP] },
+    }).sort({ createdAt: -1 });
+    return res.status(200).json({ success: true, message: 'Active ride', data: active || null });
+});
+exports.getActiveRide = getActiveRide;

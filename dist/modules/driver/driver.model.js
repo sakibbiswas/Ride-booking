@@ -7,6 +7,7 @@ const driverSchema = new mongoose_1.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     approved: { type: Boolean, default: false },
+    isOnline: { type: Boolean, default: false }, //  track online/offline
     location: {
         type: {
             type: String,

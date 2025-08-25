@@ -8,8 +8,12 @@ const user_controller_1 = require("./user.controller");
 const auth_middleware_1 = __importDefault(require("../../middlewares/auth.middleware"));
 const user_model_1 = require("./user.model");
 const router = express_1.default.Router();
-// ✅ Allow all authenticated users to access this
+// ✅ Authenticated user routes
 router.get('/me', (0, auth_middleware_1.default)(), user_controller_1.getMyProfile);
+router.patch('/me', (0, auth_middleware_1.default)(), user_controller_1.updateMyProfile);
+router.patch('/password', (0, auth_middleware_1.default)(), user_controller_1.updateMyPassword);
+router.patch('/emergency-contacts', (0, auth_middleware_1.default)(), user_controller_1.updateMyEmergencyContacts);
+router.patch('/me/online', (0, auth_middleware_1.default)(), user_controller_1.setOnlineStatus);
 // ✅ Admin-only
 router.get('/', (0, auth_middleware_1.default)(user_model_1.UserRole.ADMIN), user_controller_1.getAllUsers);
 router.patch('/block/:id', (0, auth_middleware_1.default)(user_model_1.UserRole.ADMIN), user_controller_1.blockUser);

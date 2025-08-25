@@ -45,9 +45,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
+exports.logout = exports.login = exports.register = void 0;
 const AuthService = __importStar(require("./auth.service"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const user_model_1 = require("../user/user.model");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, role } = req.body;
     const user = yield AuthService.registerUser(name, email, password, role);
@@ -62,6 +63,10 @@ exports.register = register;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const result = yield AuthService.loginUser(email, password);
+    //  Driver হলে login এর সাথে isOnline update
+    if (result.user.role === user_model_1.UserRole.DRIVER) {
+        yield user_model_1.User.findByIdAndUpdate(result.user._id, { isOnline: true });
+    }
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,
@@ -70,3 +75,36 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 exports.login = login;
+//  Driver Logout
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.userId;
+        if (!userId) {
+            return (0, sendResponse_1.default)(res, {
+                statusCode: 401,
+                success: false,
+                message: 'Unauthorized',
+            });
+        }
+        //  Driver isOnline false 
+        const user = yield user_model_1.User.findById(userId);
+        if ((user === null || user === void 0 ? void 0 : user.role) === user_model_1.UserRole.DRIVER) {
+            yield user_model_1.User.findByIdAndUpdate(userId, { isOnline: false });
+        }
+        (0, sendResponse_1.default)(res, {
+            statusCode: 200,
+            success: true,
+            message: 'Logout successful',
+        });
+    }
+    catch (err) {
+        console.error(err);
+        (0, sendResponse_1.default)(res, {
+            statusCode: 500,
+            success: false,
+            message: 'Server error',
+        });
+    }
+});
+exports.logout = logout;
