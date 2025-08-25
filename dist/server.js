@@ -67,10 +67,10 @@ const createDefaultAdmin = () => __awaiter(void 0, void 0, void 0, function* () 
             password: hashedPassword,
             role: user_model_1.UserRole.ADMIN,
             isBlocked: false,
-            isApproved: true,
+            isApproved: true
         });
         yield adminUser.save();
-        console.log('✅ Default admin user created');
+        console.log('✅ Default admin created');
     }
     else {
         console.log('ℹ️ Admin already exists');

@@ -69,11 +69,11 @@ const createDefaultAdmin = async () => {
       password: hashedPassword,
       role: UserRole.ADMIN,
       isBlocked: false,
-      isApproved: true,
+      isApproved: true
     });
 
     await adminUser.save();
-    console.log('✅ Default admin user created');
+    console.log('✅ Default admin created');
   } else {
     console.log('ℹ️ Admin already exists');
   }
@@ -95,4 +95,5 @@ const main = async () => {
 };
 
 main();
+
 

@@ -52,10 +52,10 @@ import config from './config';
 
 const app = express();
 
-// ✅ CORS setup
+// CORS setup
 app.use(cors({
-  origin: config.frontend_url, // your frontend URL
-  credentials: true,           // allow cookies
+  origin: config.frontend_url,
+  credentials: true
 }));
 
 app.use(express.json());
@@ -74,5 +74,3 @@ app.use('/api/v1/admin', adminRoutes);
 app.use(errorMiddleware);
 
 export default app;
-
-

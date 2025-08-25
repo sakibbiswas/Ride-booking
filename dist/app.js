@@ -37,10 +37,10 @@ const admin_route_1 = __importDefault(require("./modules/user/admin.route"));
 const error_middleware_1 = __importDefault(require("./middlewares/error.middleware"));
 const config_1 = __importDefault(require("./config"));
 const app = (0, express_1.default)();
-// ✅ CORS setup
+// CORS setup
 app.use((0, cors_1.default)({
-    origin: config_1.default.frontend_url, // your frontend URL
-    credentials: true, // allow cookies
+    origin: config_1.default.frontend_url,
+    credentials: true
 }));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
