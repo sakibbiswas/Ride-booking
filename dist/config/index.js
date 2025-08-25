@@ -12,10 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // };
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const config = {
-    port: process.env.PORT || 5000, // Local use only
+exports.default = {
+    port: process.env.PORT || 5000,
     mongo_uri: process.env.MONGO_URI,
     jwt_secret: process.env.JWT_SECRET || 'secret123',
-    env: process.env.NODE_ENV || 'development',
+    frontend_url: process.env.FRONTEND_URL || 'http://localhost:5173',
 };
-exports.default = config;
