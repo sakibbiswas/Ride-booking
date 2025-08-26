@@ -12,7 +12,7 @@ export const getUserById = async (id: string) => {
   return await User.findById(id).lean();
 };
 
-// ✅ Update Profile (Admin, Rider, Driver)
+//  Update Profile (Admin, Rider, Driver)
 export const updateProfile = async (
   id: string,
   data: Partial<{ name: string; email: string }>
@@ -24,7 +24,7 @@ export const updateProfile = async (
   return await User.findByIdAndUpdate(id, allowed, { new: true }).lean();
 };
 
-// ✅ Update Password
+//  Update Password
 export const updatePassword = async (
   id: string,
   currentPassword: string,
@@ -41,7 +41,7 @@ export const updatePassword = async (
   return true;
 };
 
-// ✅ Update Emergency Contacts (not for admin, but available)
+//  Update Emergency Contacts (not for admin, but available)
 export const updateEmergencyContacts = async (
   id: string,
   contacts: { name: string; phone: string }[]
@@ -53,27 +53,27 @@ export const updateEmergencyContacts = async (
   ).lean();
 };
 
-// ✅ Block User
+//  Block User
 export const blockUser = async (id: string) => {
   return await User.findByIdAndUpdate(id, { isBlocked: true }, { new: true });
 };
 
-// ✅ Unblock User
+//  Unblock User
 export const unblockUser = async (id: string) => {
   return await User.findByIdAndUpdate(id, { isBlocked: false }, { new: true });
 };
 
-// ✅ Approve Driver
+//  Approve Driver
 export const approveDriver = async (id: string) => {
   return await User.findByIdAndUpdate(id, { isApproved: true }, { new: true });
 };
 
-// ✅ Suspend Driver
+//  Suspend Driver
 export const suspendDriver = async (id: string) => {
   return await User.findByIdAndUpdate(id, { isApproved: false }, { new: true });
 };
 
-// ✅ Set Online/Offline
+//  Set Online/Offline
 export const setOnlineStatus = async (userId: string, isOnline?: boolean) => {
   const user = await User.findById(userId);
   if (!user) throw new Error('User not found');
