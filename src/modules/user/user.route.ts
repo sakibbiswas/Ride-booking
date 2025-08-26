@@ -17,7 +17,7 @@ import { UserRole } from './user.model';
 
 const router = express.Router();
 
-// ✅ Authenticated user routes
+//  Authenticated user routes
 router.get('/me', authMiddleware(), getMyProfile);
 router.patch('/me', authMiddleware(), updateMyProfile);
 router.patch('/password', authMiddleware(), updateMyPassword);
