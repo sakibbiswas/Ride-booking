@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import * as UserService from './user.service';
 import sendResponse from '../../utils/sendResponse';
 
-// ✅ GET /users
+// GET /users
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await UserService.getAllUsers();
 
@@ -21,7 +21,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
   });
 };
 
-// ✅ GET /users/me
+//  GET /users/me
 export const getMyProfile = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
   if (!userId) return res.status(401).json({ message: 'Unauthorized' });
@@ -40,7 +40,7 @@ export const getMyProfile = async (req: Request, res: Response) => {
   });
 };
 
-// ✅ PATCH /users/me
+//  PATCH /users/me
 export const updateMyProfile = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
   if (!userId) return res.status(401).json({ message: 'Unauthorized' });
@@ -58,7 +58,7 @@ export const updateMyProfile = async (req: Request, res: Response) => {
   });
 };
 
-// ✅ PATCH /users/password
+//  PATCH /users/password
 export const updateMyPassword = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
   const { currentPassword, newPassword } = req.body;
@@ -76,7 +76,7 @@ export const updateMyPassword = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ PATCH /users/emergency-contacts
+//  PATCH /users/emergency-contacts
 export const updateMyEmergencyContacts = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
   const { emergencyContacts } = req.body;
@@ -98,7 +98,7 @@ export const updateMyEmergencyContacts = async (req: Request, res: Response) => 
   });
 };
 
-// ✅ PATCH /users/online-status
+//  PATCH /users/online-status
 export const setOnlineStatus = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
   if (!userId) return res.status(401).json({ message: 'Unauthorized' });
@@ -117,7 +117,7 @@ export const setOnlineStatus = async (req: Request, res: Response) => {
   });
 };
 
-// ✅ PATCH /users/block/:id
+//  PATCH /users/block/:id
 export const blockUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await UserService.blockUser(id);
@@ -132,7 +132,7 @@ export const blockUser = async (req: Request, res: Response) => {
   });
 };
 
-// ✅ PATCH /users/unblock/:id
+//  PATCH /users/unblock/:id
 export const unblockUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await UserService.unblockUser(id);
@@ -147,7 +147,7 @@ export const unblockUser = async (req: Request, res: Response) => {
   });
 };
 
-// ✅ PATCH /users/approve/:id
+//  PATCH /users/approve/:id
 export const approveDriver = async (req: Request, res: Response) => {
   const { id } = req.params;
   const driver = await UserService.approveDriver(id);
@@ -162,7 +162,7 @@ export const approveDriver = async (req: Request, res: Response) => {
   });
 };
 
-// ✅ PATCH /users/suspend/:id
+//  PATCH /users/suspend/:id
 export const suspendDriver = async (req: Request, res: Response) => {
   const { id } = req.params;
   const driver = await UserService.suspendDriver(id);
