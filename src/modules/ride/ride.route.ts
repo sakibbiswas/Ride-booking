@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.get('/', getAllRides);
 
-// ✅ Estimate fare (no auth, Rider just checks fare)
+//  Estimate fare (no auth, Rider just checks fare)
 router.get('/estimate', estimateFare);
 
 // Rider actions
@@ -29,7 +29,7 @@ router.get('/me', authMiddleware(UserRole.RIDER, UserRole.DRIVER), rideHistory);
 // Driver actions
 router.patch('/:id/status', authMiddleware(UserRole.DRIVER), updateStatus);
 
-// ✅ New route: online drivers count for Rider
+//  New route: online drivers count for Rider
 router.get(
   '/online-drivers',
   authMiddleware(UserRole.RIDER),
@@ -44,7 +44,6 @@ router.get(
 );
 
 export default router;
-
 
 
 
