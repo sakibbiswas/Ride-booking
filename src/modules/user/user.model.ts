@@ -16,7 +16,7 @@ export interface IUser {
   isBlocked?: boolean;
   isApproved?: boolean;
   isOnline?: boolean;
-  emergencyContacts?: { name: string; phone: string }[]; // ✅ array of objects
+  emergencyContacts?: { name: string; phone: string }[]; //  array of objects
 }
 
 const emergencyContactSchema = new Schema(
@@ -45,7 +45,7 @@ const userSchema = new Schema<IUser>(
     isBlocked: { type: Boolean, default: false },
     isApproved: { type: Boolean, default: false },
     isOnline: { type: Boolean, default: false },
-    emergencyContacts: [emergencyContactSchema], // ✅ nested object array
+    emergencyContacts: [emergencyContactSchema], //  nested object array
   },
   { timestamps: true }
 );
